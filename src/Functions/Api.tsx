@@ -1,5 +1,5 @@
 class Api {
-    private static baseApi = "http://127.0.0.1:8000/api"
+    private static baseApi = "https://iot-mona.000webhostapp.com"
 
     static async request(
         path: string,
