@@ -20,6 +20,9 @@ const App = () => {
     const [total, setTotal] = useState(0)
     const [setOfEggs, setSetOfEggs] = useState<Record<string, number>[]>()
     const [today, setToday] = useState(DateParse.today("Y-n-j"))
+    const [totalClassification, setTotalClassification] = useState<
+        Record<string, number>
+    >({ rotten_egg: 0, small_egg: 0, medium_egg: 0, large_egg: 0 })
 
     const getTotalEggToday = useCallback(() => {
         return Object.values(eggs).reduce((curr, accu) => curr + accu)
@@ -48,6 +51,12 @@ const App = () => {
                 setSetOfEggs(setOfEggs.eggs)
                 setTotal(setOfEggs.total)
             }
+
+            const totalClassifications = await Api.request(
+                "egg/total-clasification"
+            )
+            if (totalClassification)
+                setTotalClassification(totalClassifications)
         })
 
         return () => {
@@ -138,6 +147,49 @@ const App = () => {
                                             <tr>
                                                 <th scope="row">Telur Besar</th>
                                                 <td>{eggs.largeEgg}</td>
+                                            </tr>
+                                        </tbody>
+                                    </Table>
+                                </Card.Body>
+
+                                <Card.Body className="p-4 rounded-4 shadow-sm mt-3">
+                                    <h4>Telur Telur Keseluruhan</h4>
+
+                                    <Table>
+                                        <tbody>
+                                            <tr>
+                                                <th scope="row">Telur Busuk</th>
+                                                <td>
+                                                    {
+                                                        totalClassification?.rotten_egg
+                                                    }
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row">Telur Kecil</th>
+                                                <td>
+                                                    {
+                                                        totalClassification?.small_egg
+                                                    }
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row">
+                                                    Telur Sedang
+                                                </th>
+                                                <td>
+                                                    {
+                                                        totalClassification?.medium_egg
+                                                    }
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row">Telur Besar</th>
+                                                <td>
+                                                    {
+                                                        totalClassification?.large_egg
+                                                    }
+                                                </td>
                                             </tr>
                                         </tbody>
                                     </Table>
